@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Editor</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      (function () {
+        var canvas = document.createElement('canvas');
+
+        var style = {
+          display: 'block',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+        }
+
+        for (var prop in style) {
+          canvas.style[prop] = style[prop];
+        }
+
+        function handleResize () {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        document.body.appendChild(canvas);
+
+        var context = canvas.getContext('2d');
+
+        var currentTab = 0;
+        var tabs = [{
+          name: 'Sem título',
+        }, {
+          name: 'Sem título 2',
+        }];
+
+        function draw () {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          var tab = {
+            x: 0,
+            y: 0,
+            width: null,
+            height: 30,
+          }
+
+          for (var i = 0; i < tabs.length; i++) {
+            context.font = '14px arial';
+
+            var paddingLeft = 10;
+            var paddingRight = 10;
+
+            context.fillStyle = 'brown';
+            tab.width = context.measureText(tabs[i].name).width;
+            context.fillRect(tab.x, tab.y, tab.width + paddingLeft + paddingRight, tab.height);
+
+            context.fillStyle = 'white';
+            context.textBaseline = 'middle';
+            context.fillText(tabs[i].name, tab.x + paddingLeft, tab.y + (tab.height / 2));
+
+            tab.x += tab.width + paddingLeft + paddingRight;
+
+            if (currentTab === i) {
+              var close = {
+                x: tab.x,
+                y: 0,
+                width: tab.height,
+                height: tab.height,
+              }
+
+              context.fillStyle = '#942323';
+              context.fillRect(close.x, close.y, close.width, close.height);
+
+              tab.x += close.width;
+            }
+          }
+        }
+
+        draw();
+      })();
+    </script>
+  </body>
+</html>
